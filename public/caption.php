@@ -26,7 +26,7 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 $data = json_decode($response, true);
-$caption = $data[0]['generated_text'] ?? '無法生成標籤';
+$caption = $data[0]['generated_text'] ?? $hfToken.'無法生成標籤';
 
 header('Content-Type: application/json');
 echo json_encode(['caption' => $caption]);
