@@ -25,7 +25,7 @@ curl_setopt_array($ch, [
 $response = curl_exec($ch);
 curl_close($ch);
 
-$data = json_decode($response, true);
+//$data = json_decode($response, true);
 $data = json_decode($response, true);
 if (!$data || isset($data['error'])) {
     http_response_code(500);
