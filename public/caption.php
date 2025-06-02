@@ -26,6 +26,12 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 $data = json_decode($response, true);
+$data = json_decode($response, true);
+if (!$data || isset($data['error'])) {
+    http_response_code(500);
+    echo json_encode(['error' => $data['error'] ?? 'Unknown error']);
+    exit;
+}
 $caption = $data[0]['generated_text'] ?? $hfToken.'無法生成標籤';
 
 header('Content-Type: application/json');
