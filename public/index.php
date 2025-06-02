@@ -35,20 +35,17 @@
       }
     });
 
-    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      const response = await fetch('caption.php', {
-        method: 'POST',
-        body: formData
-      });
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'image-caption.zip';
-      a.click();
-    });
+document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const response = await fetch('caption.php', {
+    method: 'POST',
+    body: formData
+  });
+  const result = await response.json();
+  document.getElementById('caption').textContent = '圖片描述：' + result.caption;
+});
+
   </script>
 </body>
 </html>

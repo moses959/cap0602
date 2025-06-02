@@ -6,8 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_FILES['image'])) {
 }
 
 $tmpFile = $_FILES['image']['tmp_name'];
-$originalName = $_FILES['image']['name'];
-
 $imgData = file_get_contents($tmpFile);
 
 $apiUrl = "https://api-inference.huggingface.co/models/nlpconnect/vit-gpt2-image-captioning";
@@ -30,16 +28,6 @@ curl_close($ch);
 $data = json_decode($response, true);
 $caption = $data[0]['generated_text'] ?? '無法生成標籤';
 
-$zipFile = tempnam(sys_get_temp_dir(), 'zip');
-$zip = new ZipArchive();
-$zip->open($zipFile, ZipArchive::OVERWRITE);
-$zip->addFromString("caption.txt", $caption);
-$zip->addFile($tmpFile, $originalName);
-$zip->close();
-
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="image-caption.zip"');
-header('Content-Length: ' . filesize($zipFile));
-readfile($zipFile);
-unlink($zipFile);
+header('Content-Type: application/json');
+echo json_encode(['caption' => $caption]);
 ?>
